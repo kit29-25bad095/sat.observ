@@ -1,54 +1,32 @@
-# Earth Observation Platform
+# React + TypeScript + Vite
 
-A professional futuristic Earth observation platform that unifies satellite data from Sentinel, Landsat, and ISRO into a single intelligent system.
+This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
-## Features
+Currently, two official plugins are available:
 
-- Real-time satellite orbital visualization with glowing digital Earth
-- Live data feed showing satellite acquisitions
-- Multi-stage processing pipeline (Data Ingestion, Standardization, AI/ML Fusion, Cloud Processing)
-- Real-world impact metrics for agriculture, disaster response, climate monitoring, and smart cities
-- Professional space analytics lab aesthetic with responsive design
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## Development
+## React Compiler
 
-```bash
-npm install
-npm run dev
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+
+## Expanding the Oxlint configuration
+
+If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+
+```json
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react", "typescript", "oxc"],
+  "options": {
+    "typeAware": true
+  },
+  "rules": {
+    "react/rules-of-hooks": "error",
+    "react/only-export-components": ["warn", { "allowConstantExport": true }]
+  }
+}
 ```
 
-## Build
-
-```bash
-npm run build
-npm run preview
-```
-
-## Environment Variables
-
-The following environment variables are required for Supabase integration:
-
-```
-VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-```
-
-### Netlify Deployment
-
-1. Push your code to GitHub, GitLab, or Bitbucket
-2. Connect your repository to Netlify
-3. Set environment variables in Netlify dashboard:
-   - Go to Site Settings → Build & Deploy → Environment
-   - Add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`
-4. Netlify will automatically build and deploy on push
-
-The `netlify.toml` file handles build configuration, redirects, and security headers.
-
-## Tech Stack
-
-- React 18
-- TypeScript
-- Tailwind CSS
-- Vite
-- Supabase
-- Lucide React Icons
+See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.

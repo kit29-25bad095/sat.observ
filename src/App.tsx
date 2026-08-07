@@ -1,53 +1,66 @@
-import { useState, useEffect } from 'react';
-import EarthVisualization from './components/EarthVisualization';
-import ProcessingPipeline from './components/ProcessingPipeline';
-import ImpactMetrics from './components/ImpactMetrics';
-import DataFeed from './components/DataFeed';
-import Header from './components/Header';
+import { useMemo, useState } from 'react';
+import EarthCanvas from './EarthCanvas';
+import TelemetryFeed from './TelemetryFeed';
+import TelemetryModal from './TelemetryModal';
+import { SATELLITES } from './satellites';
+import './App.css';
 
-function App() {
-  const [activeSatellites, setActiveSatellites] = useState(12);
-  const [dataProcessed, setDataProcessed] = useState(0);
+export default function App() {
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [globalQuery, setGlobalQuery] = useState('');
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setDataProcessed(prev => (prev + 1) % 1000);
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, []);
+  const selectedSat = useMemo(
+    () => SATELLITES.find((s) => s.id === selectedId) ?? null,
+    [selectedId],
+  );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white overflow-x-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-950/20 via-transparent to-transparent"></div>
-
-      <div className="relative z-10">
-        <Header activeSatellites={activeSatellites} dataProcessed={dataProcessed} />
-
-        <main className="container mx-auto px-6 py-8">
-          <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 mb-12">
-            <div className="xl:col-span-3">
-              <EarthVisualization />
-            </div>
-            <div className="xl:col-span-1">
-              <DataFeed />
-            </div>
+    <div className="app">
+      <header className="app-header">
+        <div className="app-brand">
+          <span className="app-logo" aria-hidden="true"></span>
+          <div>
+            <h1 className="app-title">Orbital Telemetry Console</h1>
+            <p className="app-tagline">Live satellite tracking across global constellations</p>
           </div>
+        </div>
+        <div className="app-global-search">
+          <svg className="feed-search-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" strokeWidth="2" />
+            <line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+          <input
+            type="search"
+            placeholder="Global search — ID, constellation, status"
+            value={globalQuery}
+            onChange={(e) => setGlobalQuery(e.target.value)}
+            aria-label="Global search across satellites"
+          />
+        </div>
+      </header>
 
-          <ProcessingPipeline />
-
-          <ImpactMetrics />
-        </main>
-
-        <footer className="border-t border-slate-800 mt-16 py-6">
-          <div className="container mx-auto px-6 text-center text-slate-400 text-sm">
-            <p>Earth Observation Platform • Unified Satellite Intelligence System</p>
-            <p className="mt-2 text-slate-500">Integrating Sentinel, Landsat, ISRO & Global Earth Data Networks</p>
+      <main className="app-main">
+        <section className="panel earth-panel">
+          <div className="panel-label">Earth View</div>
+          <EarthCanvas satellites={SATELLITES} selectedId={selectedId} />
+          <div className="earth-legend">
+            <span className="legend-item"><i className="dot dot-active"></i>Active</span>
+            <span className="legend-item"><i className="dot dot-standby"></i>Standby</span>
+            <span className="legend-item"><i className="dot dot-maintenance"></i>Maintenance</span>
           </div>
-        </footer>
-      </div>
+        </section>
+
+        <section className="panel feed-panel">
+          <TelemetryFeed
+            satellites={SATELLITES}
+            selectedId={selectedId}
+            onSelect={setSelectedId}
+            globalQuery={globalQuery}
+          />
+        </section>
+      </main>
+
+      <TelemetryModal satellite={selectedSat} onClose={() => setSelectedId(null)} />
     </div>
   );
 }
-
-export default App;
