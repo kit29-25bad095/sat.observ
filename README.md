@@ -125,12 +125,6 @@ sat.observ/
 │   │   ├── hero.png        # Console preview asset
 │   │   ├── react.svg
 │   │   └── vite.svg
-│   ├── components/         # Modular telemetry and analytics components
-│   │   ├── DataFeed.tsx
-│   │   ├── EarthVisualization.tsx
-│   │   ├── Header.tsx
-│   │   ├── ImpactMetrics.tsx
-│   │   └── ProcessingPipeline.tsx
 │   ├── App.css             # High-tech dark aerospace styling & animations
 │   ├── App.tsx             # Main dashboard shell & state coordinator
 │   ├── EarthCanvas.tsx     # Three.js 3D Earth, orbit controls & raycasting
